@@ -121,7 +121,7 @@ class _HomePageState extends State<HomePage>
                 ),
                 bikeBackgroundWidget(),
                 bikeWidget(),
-                bikeOverlayWidget(),
+                bikeForegroundWidget(),
                 bikeSpecsWidget(),
                 bikeSpecsFooterWidget(),
               ],
@@ -138,15 +138,20 @@ class _HomePageState extends State<HomePage>
       bottom: -addedScreenHeight,
       child: AnimatedBuilder(
         animation: animationController,
+        // single-operation constructor
+        //
         // to move its child by "bikeSpecsWidth" in x-axis
         builder: (context, widget) => Transform.translate(
           offset: Offset(bikeSpecsWidth * animationController.value, 0),
-          // to rotate its child by 90 + 0.1 degrees
+          // defalut constructor
           child: Transform(
             transform: Matrix4.identity()
+              // to add perspective
+              //
               // reduces lengths when the object goes farther away
               // and increases them when they come nearer
               ..setEntry(3, 2, 0.001) // this sets value at 4 column and 3 row
+              // to rotate its child by 90 + 0.1 degrees
               ..rotateY((pi / 2 + 0.1) * -animationController.value),
             alignment: Alignment.centerLeft,
             child: widget,
@@ -168,6 +173,9 @@ class _HomePageState extends State<HomePage>
             ),
           ),
           // shadow of background
+          //
+          // good to add either shadow or opacity
+          // to enhance perspective
           child: Stack(
             children: <Widget>[
               AnimatedBuilder(
@@ -206,14 +214,12 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  Widget bikeOverlayWidget() {
+  Widget bikeForegroundWidget() {
     return Positioned.fill(
       bottom: 50,
       child: AnimatedBuilder(
         animation: animationController,
         builder: (context, widget) => Opacity(
-          // good to add either shadow or opacity
-          // to add more perspective
           opacity: 1 - animationController.value,
           child: Transform.translate(
             // +50 on x-axis to see the different layers while rotating
