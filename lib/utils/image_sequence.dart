@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
 
 class ImageSequence extends StatefulWidget {
-  // folder of the image sequence
-  final String folderName;
+  // path relative to directory at pubspec.yaml level
+  final String imageRelativePath;
 
-  // suffix for the first image in your image sequence
-  final int suffixStart;
+  // image file name increment, 1 if files in order of 0001.png, 0002.png ...
+  final int imageNameIncrement;
 
-  // suffix length for each image in your image sequence
-  final int suffixCount;
+  // length of each file name, 4 if file names like 0001.png
+  final int imageNameLength;
 
-  // file format of each image in the image sequence, like ".png", ".jpg", etc.
-  final String fileFormat;
+  // file format of each image, like ".png", ".jpg", etc.
+  final String imageFileFormat;
 
-  final double frameCount;
-  final int frame;
+  // total number of images in the sequence
+  final int totalImages;
+
+  // current image to render, controlled from outside
+  final int currentImage;
 
   const ImageSequence({
-    this.folderName,
-    this.suffixStart,
-    this.suffixCount,
-    this.fileFormat,
-    this.frameCount,
-    this.frame,
+    this.imageRelativePath,
+    this.imageFileFormat,
+    this.imageNameIncrement,
+    this.imageNameLength,
+    this.totalImages,
+    this.currentImage,
     Key key,
   }) : super(key: key);
 
@@ -35,22 +38,22 @@ class _ImageSequenceState extends State<ImageSequence> {
   Image currentFrame;
 
   String getSuffix(String value) {
-    while (value.length < widget.suffixCount) value = "0" + value;
+    while (value.length < widget.imageNameLength) value = "0" + value;
     return value;
   }
 
   String getDirectory() {
-    return widget.folderName +
-        getSuffix((widget.suffixStart + previousFrame).toString()) +
-        widget.fileFormat;
+    return widget.imageRelativePath +
+        getSuffix((widget.imageNameIncrement + previousFrame).toString()) +
+        widget.imageFileFormat;
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.frame != null) {
-      if (currentFrame == null || widget.frame != previousFrame) {
-        previousFrame = widget.frame;
-        if (previousFrame < widget.frameCount)
+    if (widget.currentImage != null) {
+      if (currentFrame == null || widget.currentImage != previousFrame) {
+        previousFrame = widget.currentImage;
+        if (previousFrame < widget.totalImages)
           currentFrame = Image.asset(
             getDirectory(),
             gaplessPlayback: true,

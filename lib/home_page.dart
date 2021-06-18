@@ -201,13 +201,12 @@ class _HomePageState extends State<HomePage>
         child: AnimatedBuilder(
           animation: animationController,
           builder: (_, __) => ImageSequence(
-            folderName: "assets/bikeImageSequence/", // folderName
-            suffixStart: 1, // suffixStart -> first image is 0001.png
-            suffixCount: 4, // suffixCount -> there are 4 digits in 0001.png
-            fileFormat: ".png", // fileFormat
-            frameCount: 120, // frameCount -> will go to 0120.png
-            frame: (animationController.value * 120)
-                .ceil(), // control each frame from outside
+            imageRelativePath: "assets/bikeImageSequence/",
+            imageNameIncrement: 1,
+            imageNameLength: 4,
+            imageFileFormat: ".png",
+            totalImages: 120,
+            currentImage: (animationController.value * 120).ceil(),
           ),
         ),
       ),
