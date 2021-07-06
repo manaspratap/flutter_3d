@@ -8,7 +8,7 @@ On starting this app with `flutter run`, here is how the final working version w
 
 Awesome right? I know!
 
-A detailed article on this is coming soon!
+[Here](https://techblog.geekyants.com/principles-of-3d-design-for-flutter) is a detailed article on this.
 
 And below is a detiled video on the same.
 
